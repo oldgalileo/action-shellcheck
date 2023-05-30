@@ -98,15 +98,15 @@ echo '::endgroup::'
 echo '::group:: Running shellcheck (suggestion) ...'
 # -reporter must be github-pr-review for the suggestion feature.
 # shellcheck disable=SC2086
-shellcheck -f diff ${FILES} \
-  | reviewdog \
-      -name="shellcheck (suggestion)" \
-      -f=diff \
-      -f.diff.strip=1 \
-      -reporter="github-pr-review" \
-      -filter-mode="${INPUT_FILTER_MODE}" \
-      -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
-      ${INPUT_REVIEWDOG_FLAGS}
+shellcheck -f diff ${FILES} > "${RUNNER_TEMP}/shellcheck-suggestion"
+reviewdog \
+    -name="shellcheck (suggestion)" \
+    -f=diff \
+    -f.diff.strip=1 \
+    -reporter="github-pr-review" \
+    -filter-mode="${INPUT_FILTER_MODE}" \
+    -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
+    ${INPUT_REVIEWDOG_FLAGS} < "${RUNNER_TEMP}/shellcheck-suggestion"
 EXIT_CODE_SUGGESTION=$?
 echo '::endgroup::'
 
