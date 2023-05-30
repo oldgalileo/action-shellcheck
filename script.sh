@@ -99,8 +99,11 @@ echo '::group:: Running shellcheck (suggestion) ...'
 # -reporter must be github-pr-review for the suggestion feature.
 # shellcheck disable=SC2086
 shellcheck -f diff ${FILES} > "${RUNNER_TEMP}/shellcheck-suggestion" 2>"${RUNNER_TEMP}/shellcheck-errors"
+echo "Dumping shellcheck suggestions"
 cat "${RUNNER_TEMP}/shellcheck-suggestion"
+echo "Dumping shellcheck errors"
 cat "${RUNNER_TEMP}/shellcheck-errors"
+echo "Running reviewdog..."
 reviewdog \
     -name="shellcheck (suggestion)" \
     -f=diff \
